@@ -1,5 +1,5 @@
 {
-	"name": "GitHub Codespaces (Default)",
+	"name": "Codespaces (sheldonhull)",
 	"build": {
 		"dockerfile": "Dockerfile",
 		"args": {
@@ -51,7 +51,6 @@
 	// "forwardPorts": [],
 	// "oryx build" will automatically install your dependencies and attempt to build your project
 	"postCreateCommand": [
-		"oryx build -p virtualenv_name=.venv --log-file /tmp/oryx-build.log --manifest-dir /tmp || echo 'Could not auto-build. Skipping.'",
-		"go version && go install github.com/magefile/mage@latest",
+		"oryx build -p virtualenv_name=.venv --log-file /tmp/oryx-build.log --manifest-dir /tmp || echo 'Could not auto-build. Skipping.'"
 	]
 }
