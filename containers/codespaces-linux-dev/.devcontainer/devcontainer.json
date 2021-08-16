@@ -3,7 +3,8 @@
 	"build": {
 		"dockerfile": "Dockerfile",
 		"args": {
-			"INSTALL_AZURE_CLI": "false"
+			"INSTALL_AZURE_CLI": "false",
+			"INSTALL_AWS_CLI": "false"
 		}
 	},
 	"settings": {

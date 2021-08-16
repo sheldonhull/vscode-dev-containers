@@ -20,6 +20,11 @@ RUN mkdir -p /home/codespace/.vscode-server/extensions \
 COPY library-scripts/*.sh library-scripts/*.env /tmp/library-scripts/
 RUN if [ "$INSTALL_AZURE_CLI" = "true" ]; then bash /tmp/library-scripts/azcli-debian.sh; fi \
     && apt-get clean -y && rm -rf /var/lib/apt/lists/* /tmp/library-scripts
+
+COPY library-scripts/*.sh library-scripts/*.env /tmp/library-scripts/
+RUN if [ "$INSTALL_AWS_CLI" = "true" ]; then bash /tmp/library-scripts/ubuntu-aws-cli.sh; fi \
+    && apt-get clean -y && rm -rf /var/lib/apt/lists/* /tmp/library-scripts
+
 RUN echo "✅ install chezmoi for dotfiles syncing" && sh -c "$(wget -qO- git.io/chezmoi)" && mv ./bin/chezmoi /usr/local/bin/chezmoi && rm -rf ./bin
 
 USER codespace
@@ -30,7 +35,9 @@ RUN echo "✅ installing task runners" \
   && go install github.com/magefile/mage@latest && go install github.com/iwittkau/mage-select@latest \
   && go install github.com/go-task/task/v3/cmd/task@latest
 RUN pwsh -nologo -c 'New-Item -Path ($Profile | Split-Path -Parent) -ItemType Directory' \
-    && pwsh -nologo -c 'Set-Content $PROFILE ''$(starship init powershell)'' -Force'
+    && pwsh -nologo -c 'Set-Content $PROFILE ''iex $(&starship init powershell --print-full-init | Out-String)'' -Force'
+
+
 # Set multiple labels at once, using line-continuation characters to break long lines
 LABEL vendor=misc \
       type=codespaces \
