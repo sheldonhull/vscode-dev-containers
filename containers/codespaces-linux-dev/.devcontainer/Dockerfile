@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/vscode/devcontainers/universal:1-linux
+FROM mcr.microsoft.com/vscode/devcontainers/universal:linux
 
 # ** [Optional] Uncomment this section to install additional packages. **
 # USER root
@@ -23,14 +23,14 @@ RUN if [ "$INSTALL_AZURE_CLI" = "true" ]; then bash /tmp/library-scripts/azcli-d
 RUN echo "✅ install chezmoi for dotfiles syncing" && sh -c "$(wget -qO- git.io/chezmoi)" && mv ./bin/chezmoi /usr/local/bin/chezmoi && rm -rf ./bin
 
 USER codespace
-RUN pwsh -nologo -c 'New-Item -Path ($Profile | Split-Path -Parent) -ItemType Directory'
 RUN echo "installing gitversion for automatic semver versioning" && dotnet tool install --global GitVersion.Tool
 RUN curl -fsSL https://starship.rs/install.sh | sudo bash -s -- --force && echo "completed setup of starship.rs"
 RUN echo "✅ installing task runners" \
   && go version \
   && go install github.com/magefile/mage@latest && go install github.com/iwittkau/mage-select@latest \
   && go install github.com/go-task/task/v3/cmd/task@latest
-
+RUN pwsh -nologo -c 'New-Item -Path ($Profile | Split-Path -Parent) -ItemType Directory' \
+    && pwsh -nologo -c 'Set-Content $PROFILE ''$(starship init powershell)'' -Force'
 # Set multiple labels at once, using line-continuation characters to break long lines
 LABEL vendor=misc \
       type=codespaces \
