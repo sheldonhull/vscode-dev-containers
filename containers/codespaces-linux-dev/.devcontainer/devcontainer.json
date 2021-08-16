@@ -43,6 +43,10 @@
 		"--privileged",
 		"--init"
 	],
+	"remoteEnv": {
+		"GH_TOKEN": "${localEnv:GITHUB_OAUTH_TOKEN}",
+		"AZURE_DEVOPS_ORGANIZATION": "${localEnv:AZURE_DEVOPS_ORGANIZATION}",
+	},
 	// Add the IDs of extensions you want installed when the container is created.
 	"extensions": [
 		// "GitHub.vscode-pull-request-github"
